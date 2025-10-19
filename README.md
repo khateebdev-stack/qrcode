@@ -431,4 +431,4 @@ For issues, questions, or contributions:
 
 ---
 
-**Developed with ❤️ using React Native**
+**Developed with Khateeb dev using React Native**
