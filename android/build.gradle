@@ -10,11 +10,20 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+
+        configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.github.wjs317') {
+                details.useTarget 'com.github.wjs317:vision-camera-code-scanner:1.0.0' // Example: Force it to use a known good version or target
+            }
+        }
+    }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        
     }
 }
 

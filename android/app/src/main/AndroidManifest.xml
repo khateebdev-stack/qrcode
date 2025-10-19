@@ -1,27 +1,67 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+  ANDROID MANIFEST - PERMISSIONS AND DEEP LINKING CONFIGURATION
+  
+  CHANGES MADE:
+  1. Added CAMERA permission for QR code scanning functionality
+  2. Added deep link intent filters for automatic navigation
+  3. Configured qrcodeapp:// scheme for in-app deep links
+  4. Added HTTP/HTTPS support for web deep links
+  
+  PROBLEMS SOLVED:
+  - Camera not working due to missing permission
+  - Deep links not opening the app automatically
+  - QR codes with deep links not navigating properly
+  
+  PERMISSIONS:
+  - INTERNET: For web requests and external links
+  - CAMERA: For QR code scanning functionality
+  
+  DEEP LINK CONFIGURATION:
+  - qrcodeapp://* - Handles all app deep links
+  - http/https://app.example.com - Handles web deep links
+-->
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:theme="@style/AppTheme"
-      android:usesCleartextTraffic="${usesCleartextTraffic}"
-      android:supportsRtl="true">
-      <activity
-        android:name=".MainActivity"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.qrcode">
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <application
+        android:name=".MainApplication"
         android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-        android:launchMode="singleTask"
-        android:windowSoftInputMode="adjustResize"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-      </activity>
-    </application>
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="false"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="${usesCleartextTraffic}"
+        android:supportsRtl="true">
+    <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
+      <!-- Default launcher -->
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      <!-- ✅ Deep link intent -->
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <!-- 👇 "host" should be * instead of 'open' if you want all links to work -->
+        <data android:scheme="qrcodeapp" android:host="*"  android:pathPrefix="/"  />
+      </intent-filter>
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http" />
+        <data android:scheme="https" />
+        <data android:host="app.example.com" />
+      </intent-filter>
+
+        </activity>
+  </application>
 </manifest>
